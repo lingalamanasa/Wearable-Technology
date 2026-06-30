@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Stackly Wearable Technology Blog - Latest insights, research, and trends in wearable tech, AI health, and AR innovation.">
+  <title>Blog || Stackly Wearable Technology</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .featured-section { padding: 5rem 0; position: relative; overflow: hidden; }
+    .featured-card { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    .featured-card img { width: 100%; height: 350px; object-fit: cover; border-radius: 16px; border: 2px solid var(--border-color); }
+    .featured-content .blog-tag { display: inline-block; padding: 0.3rem 1rem; background: rgba(0,180,216,0.15); border: 1px solid var(--primary-color); border-radius: 15px; color: var(--primary-color); font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+    .featured-content h2 { font-size: 2rem; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; font-weight: 800; }
+    .featured-content p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1.5rem; line-height: 1.8; }
+    .featured-meta { display: flex; align-items: center; gap: 1.5rem; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .featured-meta i { color: var(--primary-color); }
+
+    .blog-grid-section { padding: 5rem 0; background: var(--darker-bg); position: relative; overflow: hidden; }
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .blog-card { padding: 0; overflow: hidden; }
+    .blog-card img { width: 100%; height: 200px; object-fit: cover; }
+    .blog-card-content { padding: 1.5rem; }
+    .blog-card-meta { display: flex; gap: 1rem; margin-bottom: 0.8rem; }
+    .blog-card-meta span { font-size: 0.8rem; color: var(--primary-color); font-weight: 600; text-transform: uppercase; }
+    .blog-card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+    .blog-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    .blog-card .read-more { color: var(--primary-color); font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.3rem; }
+    .blog-card .read-more:hover { gap: 0.8rem; }
+
+    .newsletter-section { padding: 7rem 0; position: relative; overflow: hidden; text-align: center; }
+    .newsletter-section::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at center, rgba(123,47,247,0.06), transparent 60%); }
+    .newsletter-content { position: relative; z-index: 2; max-width: 600px; margin: 0 auto; }
+    .newsletter-content h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .newsletter-content p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; }
+    .newsletter-form { display: flex; gap: 0.8rem; max-width: 500px; margin: 0 auto; }
+    .newsletter-form input { flex: 1; padding: 1rem 1.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); border-radius: 30px; color: #fff; font-family: inherit; outline: none; transition: var(--transition); }
+    .newsletter-form input:focus { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0,180,216,0.2); }
+    .newsletter-form button { white-space: nowrap; }
+
+    @media (max-width: 768px) {
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-card img { height: 250px; }
+      .newsletter-form { flex-direction: column; }
+      .newsletter-form button { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="10" fill="url(#logoGrad)"/><path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/><defs><linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs></svg><span>STACKLY</span></a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="blog.html" class="active">Blog</a><a href="contact.html">Contact</a>
+        <div class="nav-auth">
+          <a href="login.html" class="btn-secondary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;"><i class="bi bi-person-circle"></i> Login</a>
+          <a href="register.html" class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;"><i class="bi bi-person-plus"></i> Register</a>
+        </div>
+      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="section-badge fade-up"><i class="bi bi-journal-richtext"></i> Blog</div>
+      <h1 class="fade-up">Tech <span>Insights</span> & News</h1>
+      <p class="fade-up">Stay ahead of the curve with the latest trends and breakthroughs in wearable technology.</p>
+    </div>
+  </section>
+
+  <!-- ===== FEATURED ARTICLE ===== -->
+  <section class="featured-section">
+    <div class="container">
+      <div class="featured-card glass-card" style="padding: 0; overflow: hidden;">
+        <img src="images/blog-1.webp" alt="Featured Article" class="slide-left">
+        <div class="featured-content slide-right" style="padding: 2.5rem;">
+          <span class="blog-tag">Featured</span>
+          <div class="featured-meta"><span><i class="bi bi-calendar3"></i> Jun 25, 2026</span><span><i class="bi bi-clock"></i> 8 min read</span></div>
+          <h2>How AI is Revolutionizing Wearable Health Monitoring</h2>
+          <p>From detecting irregular heart rhythms to predicting blood glucose spikes, AI-powered wearables are transforming preventive healthcare. Discover the cutting-edge algorithms behind Stackly's health engine.</p>
+          <a href="error.html" class="btn-primary"><i class="bi bi-arrow-right"></i> Read Full Article</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOG GRID ===== -->
+  <section class="blog-grid-section">
+    <div class="container">
+      <div style="text-align: center;" class="fade-up">
+        <div class="section-badge"><i class="bi bi-grid-fill"></i> All Articles</div>
+        <h2 class="section-title">Latest <span>Posts</span></h2>
+      </div>
+      <div class="blog-grid">
+        <div class="glass-card blog-card fade-up delay-1">
+          <img src="images/blog-2.webp" alt="5G Wearables">
+          <div class="blog-card-content">
+            <div class="blog-card-meta"><span>Connectivity</span><span>Jun 20, 2026</span></div>
+            <h3>5G and the Future of Always-Connected Wearables</h3>
+            <p>How 5G networks are enabling real-time data streaming and cloud computing on wearable devices.</p>
+            <a href="error.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="glass-card blog-card fade-up delay-2">
+          <img src="images/blog-3.webp" alt="Sports Tech">
+          <div class="blog-card-content">
+            <div class="blog-card-meta"><span>Sports Tech</span><span>Jun 15, 2026</span></div>
+            <h3>Wearables in Professional Sports: A Game Changer</h3>
+            <p>Professional athletes are leveraging wearable technology for peak performance and injury prevention.</p>
+            <a href="error.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="glass-card blog-card fade-up delay-3">
+          <img src="images/service-health.webp" alt="Biosensors">
+          <div class="blog-card-content">
+            <div class="blog-card-meta"><span>Hardware</span><span>Jun 10, 2026</span></div>
+            <h3>Next-Gen Biosensors: Measuring What Was Unmeasurable</h3>
+            <p>Electrochemical and optical sensors are enabling continuous glucose, cortisol, and hydration monitoring.</p>
+            <a href="error.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="glass-card blog-card fade-up delay-1">
+          <img src="images/service-enterprise.webp" alt="AR Enterprise">
+          <div class="blog-card-content">
+            <div class="blog-card-meta"><span>Enterprise</span><span>Jun 5, 2026</span></div>
+            <h3>AR Glasses in the Workplace: ROI Case Studies</h3>
+            <p>Three enterprise customers share how AR wearables boosted productivity by 25-40%.</p>
+            <a href="error.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="glass-card blog-card fade-up delay-2">
+          <img src="images/service-dev.webp" alt="Developer Tools">
+          <div class="blog-card-content">
+            <div class="blog-card-meta"><span>Developers</span><span>May 28, 2026</span></div>
+            <h3>Building Your First Wearable App with Stackly SDK</h3>
+            <p>A step-by-step tutorial to create a health monitoring app using the Stackly Developer Kit.</p>
+            <a href="error.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="glass-card blog-card fade-up delay-3">
+          <img src="images/about-wearable.webp" alt="Future Trends">
+          <div class="blog-card-content">
+            <div class="blog-card-meta"><span>Trends</span><span>May 20, 2026</span></div>
+            <h3>The 2027 Wearable Technology Landscape: What to Expect</h3>
+            <p>Industry experts predict the trends that will define wearable technology in the coming year.</p>
+            <a href="error.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NEWSLETTER ===== -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-content scale-in">
+        <div class="section-badge"><i class="bi bi-envelope-heart-fill"></i> Newsletter</div>
+        <h2 class="section-title">Stay <span>Updated</span></h2>
+        <p>Get the latest wearable tech insights, product announcements, and exclusive content delivered to your inbox.</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="Enter your email address" required>
+          <button type="submit" class="btn-primary"><i class="bi bi-send"></i> Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="margin-bottom: 0.5rem;"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="10" fill="url(#fLG4)"/><path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/><defs><linearGradient id="fLG4" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs></svg><span>STACKLY</span></a>
+          <p>Pioneering the future of wearable technology.</p>
+          <div class="footer-socials"><a href="error.html"><i class="bi bi-twitter-x"></i></a><a href="error.html"><i class="bi bi-facebook"></i></a><a href="error.html"><i class="bi bi-instagram"></i></a><a href="error.html"><i class="bi bi-linkedin"></i></a><a href="error.html"><i class="bi bi-github"></i></a></div>
+        </div>
+        <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="footer-col"><h4>Products</h4><ul><li><a href="error.html">Smartwatches</a></li><li><a href="error.html">Fitness Trackers</a></li><li><a href="error.html">AR Glasses</a></li><li><a href="error.html">Health Monitors</a></li></ul></div>
+        <div class="footer-col"><h4>Support</h4><ul><li><a href="error.html">Help Center</a></li><li><a href="error.html">Documentation</a></li><li><a href="error.html">Privacy Policy</a></li><li><a href="error.html">Terms of Service</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 Stackly Wearable Technology. All rights reserved.</p></div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login || Stackly Wearable Technology</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow-x: hidden; overflow-y: auto; position: relative; padding: 2rem 1rem; }
+    .login-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+    .login-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.12) blur(3px); }
+    .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10,11,16,0.88), rgba(0,180,216,0.08)); z-index: 1; }
+
+    .login-container { width: 100%; max-width: 460px; padding: 3rem; text-align: center; position: relative; z-index: 3; overflow: visible !important; }
+    .login-logo { display: flex; align-items: center; justify-content: center; gap: 0.8rem; margin-bottom: 2rem; }
+    .login-logo svg { height: 50px; width: 50px; filter: drop-shadow(0 0 10px rgba(0,180,216,0.5)); }
+    .login-logo span { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.8rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .login-title { font-size: 1.8rem; margin-bottom: 0.5rem; animation: glow 3s ease infinite; }
+    .login-desc { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
+
+    .form-group { margin-bottom: 1.5rem; text-align: left; }
+    .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+    .form-control { width: 100%; padding: 1rem 1.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); border-radius: 10px; color: #fff; font-family: inherit; transition: var(--transition); outline: none; }
+    .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0,180,216,0.2); }
+    select.form-control { appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300B4D8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 12px; padding-right: 2.5rem; }
+    select.form-control option { background: var(--dark-bg); color: #fff; }
+
+    .password-group { position: relative; }
+    .password-group .form-control { padding-right: 3rem; }
+    .toggle-password { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; transition: var(--transition); }
+    .toggle-password:hover { color: var(--primary-color); }
+
+    .form-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.85rem; }
+    .form-options a { color: var(--primary-color); transition: var(--transition); }
+    .form-options a:hover { color: var(--secondary-color); }
+    .remember-me { display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); }
+    .remember-me input { accent-color: var(--primary-color); }
+
+    .login-btn { width: 100%; justify-content: center; padding: 1rem; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; color: var(--text-muted); font-size: 0.85rem; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border-color); }
+
+    .social-login { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+    .social-btn { width: 50px; height: 50px; border-radius: 12px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; transition: var(--transition); color: var(--text-light); }
+    .social-btn:hover { background: var(--primary-color); border-color: var(--primary-color); transform: translateY(-3px); box-shadow: var(--glow-cyan); }
+
+    .login-footer { color: var(--text-muted); font-size: 0.9rem; }
+    .login-footer a { color: var(--primary-color); font-weight: 600; transition: var(--transition); }
+    .login-footer a:hover { color: var(--secondary-color); }
+
+    .back-home { position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10; display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem; transition: var(--transition); }
+    .back-home:hover { color: var(--primary-color); }
+  </style>
+</head>
+<body>
+  <div class="login-bg"><img src="images/login-bg.webp" alt="Background"></div>
+  <div class="login-overlay"></div>
+
+  <a href="index.html" class="back-home"><i class="bi bi-arrow-left"></i> Back to Home</a>
+
+  <div class="login-container glass-card">
+    <div class="login-logo">
+      <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="50" height="50" rx="12" fill="url(#loginLogoGrad)"/>
+        <path d="M15 16h20v3.5H18.5v5h12.5v3.5H18.5v5H35V37H15V16z" fill="#fff"/>
+        <defs><linearGradient id="loginLogoGrad" x1="0" y1="0" x2="50" y2="50"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs>
+      </svg>
+      <span>STACKLY</span>
+    </div>
+    <h2 class="login-title">Welcome Back</h2>
+    <p class="login-desc">Sign in to access your wearable dashboard</p>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="loginRole">Select Role</label>
+        <select id="loginRole" class="form-control" required>
+          <option value="" disabled selected>Choose your role</option>
+          <option value="admin">Admin</option>
+          <option value="developer">Developer</option>
+          <option value="user">User</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" class="form-control" placeholder="name@company.com" required>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <div class="password-group">
+          <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+          <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
+        </div>
+      </div>
+      <div class="form-options">
+        <label class="remember-me"><input type="checkbox"> Remember me</label>
+        <a href="error.html">Forgot Password?</a>
+      </div>
+      <button type="submit" class="btn-primary login-btn"><i class="bi bi-box-arrow-in-right"></i> Sign In</button>
+    </form>
+
+    <div class="divider">Or continue with</div>
+    <div class="social-login">
+      <a href="error.html" class="social-btn"><i class="bi bi-google"></i></a>
+      <a href="error.html" class="social-btn"><i class="bi bi-github"></i></a>
+      <a href="error.html" class="social-btn"><i class="bi bi-twitter-x"></i></a>
+      <a href="error.html" class="social-btn"><i class="bi bi-apple"></i></a>
+    </div>
+
+    <p class="login-footer">Don't have an account? <a href="register.html">Create one</a></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
