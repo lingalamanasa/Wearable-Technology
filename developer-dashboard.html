@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Dashboard || Stackly Wearable Technology</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { display: flex; min-height: 100vh; overflow-x: hidden; }
+    .sidebar { width: 270px; min-height: 100vh; background: var(--darker-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 100; transition: transform 0.4s ease; }
+    .sidebar-header { padding: 1.5rem; display: flex; align-items: center; gap: 0.7rem; border-bottom: 1px solid var(--border-color); }
+    .sidebar-header svg { height: 36px; width: 36px; }
+    .sidebar-header span { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+    .sidebar-nav a { display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.5rem; color: var(--text-muted); font-weight: 500; transition: var(--transition); border-left: 3px solid transparent; font-size: 0.95rem; }
+    .sidebar-nav a:hover, .sidebar-nav a.active { color: var(--secondary-color); background: rgba(123,47,247,0.06); border-left-color: var(--secondary-color); }
+    .sidebar-nav a i { font-size: 1.1rem; width: 20px; text-align: center; }
+    .sidebar-section { padding: 1rem 1.5rem 0.5rem; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+    .sidebar-footer { padding: 1.5rem; border-top: 1px solid var(--border-color); }
+    .user-info { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+    .user-avatar { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; }
+    .user-info .user-name { font-weight: 600; font-size: 0.9rem; }
+    .user-info .user-role { font-size: 0.75rem; color: var(--secondary-color); text-transform: uppercase; letter-spacing: 1px; }
+    .logout-btn { width: 100%; justify-content: center; padding: 0.7rem; font-size: 0.8rem; background: transparent; color: var(--accent-pink); border: 1px solid var(--accent-pink); }
+    .logout-btn:hover { background: rgba(255,51,102,0.1); }
+
+    .main-content { margin-left: 270px; flex: 1; padding: 2rem; min-height: 100vh; }
+    .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .dash-header h1 { font-size: 1.8rem; }
+    .dash-header h1 span { background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    .mobile-header { display: none; position: fixed; top: 0; left: 0; right: 0; height: 60px; background: var(--darker-bg); border-bottom: 1px solid var(--border-color); z-index: 99; padding: 0 1rem; align-items: center; justify-content: space-between; }
+    .mobile-header .sidebar-toggle { background: none; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer; }
+    .mobile-header .mobile-logo { display: flex; align-items: center; gap: 0.5rem; }
+    .mobile-header .mobile-logo svg { height: 30px; width: 30px; }
+    .mobile-header .mobile-logo span { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99; }
+    .sidebar-overlay.active { display: block; }
+
+    /* API Stats */
+    .api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .api-card { padding: 1.5rem; display: flex; align-items: center; gap: 1.2rem; }
+    .api-icon { width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .api-icon.purple { background: rgba(123,47,247,0.12); color: var(--secondary-color); }
+    .api-icon.cyan { background: rgba(0,180,216,0.12); color: var(--primary-color); }
+    .api-icon.green { background: rgba(0,245,160,0.12); color: var(--accent-green); }
+    .api-icon.gold { background: rgba(255,215,0,0.12); color: var(--accent-gold); }
+    .api-info h3 { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900; }
+    .api-info p { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+    .api-info .status { font-size: 0.8rem; font-weight: 600; margin-top: 0.3rem; color: var(--accent-green); }
+
+    /* SDK Downloads */
+    .sdk-section { margin-bottom: 2rem; }
+    .sdk-section h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 700; }
+    .sdk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .sdk-card { padding: 2rem; text-align: center; }
+    .sdk-card i { font-size: 2.5rem; margin-bottom: 1rem; color: var(--secondary-color); }
+    .sdk-card h4 { font-family: 'Outfit', sans-serif; font-size: 1rem; margin-bottom: 0.5rem; }
+    .sdk-card p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+    .sdk-card .version { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--accent-green); margin-bottom: 1rem; }
+
+    /* Docs */
+    .docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .doc-card { padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; }
+    .doc-card:hover { border-color: var(--secondary-color); }
+    .doc-card .doc-icon { width: 45px; height: 45px; min-width: 45px; border-radius: 10px; background: rgba(123,47,247,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--secondary-color); }
+    .doc-card h4 { font-family: 'Outfit', sans-serif; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .doc-card p { color: var(--text-muted); font-size: 0.8rem; }
+
+    /* Projects */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card { padding: 2rem; }
+    .project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .project-header h4 { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; }
+    .project-status { padding: 0.2rem 0.7rem; border-radius: 10px; font-size: 0.7rem; font-weight: 600; }
+    .project-status.live { background: rgba(0,245,160,0.15); color: var(--accent-green); }
+    .project-status.dev { background: rgba(255,215,0,0.15); color: var(--accent-gold); }
+    .project-status.beta { background: rgba(123,47,247,0.15); color: var(--secondary-color); }
+    .project-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    .project-tech { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .project-tech span { padding: 0.2rem 0.6rem; background: rgba(0,180,216,0.1); border-radius: 6px; font-size: 0.75rem; color: var(--primary-color); }
+    .project-stats { display: flex; gap: 1.5rem; color: var(--text-muted); font-size: 0.8rem; }
+    .project-stats i { color: var(--secondary-color); margin-right: 0.3rem; }
+
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); z-index: 1000; }
+      .sidebar.active { transform: translateX(0); }
+      .main-content { margin-left: 0; padding-top: 80px; }
+      .mobile-header { display: flex; }
+      .api-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) { .api-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="mobile-header">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="bi bi-list"></i></button>
+    <div class="mobile-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="10" fill="url(#mLG2)"/><path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/><defs><linearGradient id="mLG2" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs></svg>
+      <span>STACKLY</span>
+    </div>
+    <a href="error.html" style="color: var(--text-muted); font-size: 1.2rem;"><i class="bi bi-bell"></i></a>
+  </div>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="dashSidebar">
+    <div class="sidebar-header">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="10" fill="url(#sLG2)"/><path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/><defs><linearGradient id="sLG2" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs></svg>
+      <span>STACKLY</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">Developer</div>
+      <a href="#" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="error.html"><i class="bi bi-braces"></i> API Console</a>
+      <a href="error.html"><i class="bi bi-box-seam"></i> SDK Manager</a>
+      <a href="error.html"><i class="bi bi-journal-code"></i> Documentation</a>
+      <div class="sidebar-section">Projects</div>
+      <a href="error.html"><i class="bi bi-folder2-open"></i> My Apps</a>
+      <a href="error.html"><i class="bi bi-key"></i> API Keys</a>
+      <a href="error.html"><i class="bi bi-webhook"></i> Webhooks</a>
+      <div class="sidebar-section">Account</div>
+      <a href="error.html"><i class="bi bi-gear"></i> Settings</a>
+      <a href="error.html"><i class="bi bi-life-preserver"></i> Support</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">DV</div>
+        <div><div class="user-name" id="dashUserName">Developer</div><div class="user-role">Developer</div></div>
+      </div>
+      <button class="btn-secondary logout-btn"><i class="bi bi-box-arrow-left"></i> Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="dash-header">
+      <div>
+        <h1>Developer <span>Portal</span></h1>
+        <p style="color: var(--text-muted); margin-top: 0.3rem;">Build amazing wearable experiences.</p>
+      </div>
+      <div style="color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;"><i class="bi bi-calendar3"></i> <span id="currentDate"></span></div>
+    </div>
+
+    <!-- API Stats -->
+    <div class="api-grid">
+      <div class="glass-card api-card">
+        <div class="api-icon purple"><i class="bi bi-braces-asterisk"></i></div>
+        <div class="api-info"><h3>2.4M</h3><p>API Calls (30d)</p><div class="status"><i class="bi bi-check-circle"></i> All systems operational</div></div>
+      </div>
+      <div class="glass-card api-card">
+        <div class="api-icon cyan"><i class="bi bi-speedometer"></i></div>
+        <div class="api-info"><h3>42ms</h3><p>Avg Latency</p><div class="status"><i class="bi bi-check-circle"></i> Under threshold</div></div>
+      </div>
+      <div class="glass-card api-card">
+        <div class="api-icon green"><i class="bi bi-check2-all"></i></div>
+        <div class="api-info"><h3>99.97%</h3><p>Uptime</p><div class="status"><i class="bi bi-check-circle"></i> Healthy</div></div>
+      </div>
+      <div class="glass-card api-card">
+        <div class="api-icon gold"><i class="bi bi-key-fill"></i></div>
+        <div class="api-info"><h3>3</h3><p>Active API Keys</p><div class="status"><i class="bi bi-check-circle"></i> Valid</div></div>
+      </div>
+    </div>
+
+    <!-- SDK Downloads -->
+    <div class="sdk-section">
+      <h3>SDK & Tools</h3>
+      <div class="sdk-grid">
+        <div class="glass-card sdk-card">
+          <i class="bi bi-phone"></i>
+          <h4>Mobile SDK</h4>
+          <p>iOS & Android SDK for companion app development</p>
+          <div class="version">v4.2.1 • Latest</div>
+          <a href="error.html" class="btn-primary" style="font-size: 0.8rem; padding: 0.6rem 1.5rem;"><i class="bi bi-download"></i> Download</a>
+        </div>
+        <div class="glass-card sdk-card">
+          <i class="bi bi-hdd-rack"></i>
+          <h4>Firmware SDK</h4>
+          <p>Low-level firmware development for custom devices</p>
+          <div class="version">v3.8.0 • Stable</div>
+          <a href="error.html" class="btn-primary" style="font-size: 0.8rem; padding: 0.6rem 1.5rem;"><i class="bi bi-download"></i> Download</a>
+        </div>
+        <div class="glass-card sdk-card">
+          <i class="bi bi-cloud"></i>
+          <h4>Cloud SDK</h4>
+          <p>Server-side libraries for data processing and analytics</p>
+          <div class="version">v5.0.0-beta • Beta</div>
+          <a href="error.html" class="btn-secondary" style="font-size: 0.8rem; padding: 0.6rem 1.5rem;"><i class="bi bi-download"></i> Download</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documentation Quick Links -->
+    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 700;">Quick Links</h3>
+    <div class="docs-grid">
+      <a href="error.html" class="glass-card doc-card">
+        <div class="doc-icon"><i class="bi bi-book"></i></div>
+        <div><h4>Getting Started</h4><p>Setup guide and first API call</p></div>
+      </a>
+      <a href="error.html" class="glass-card doc-card">
+        <div class="doc-icon"><i class="bi bi-braces"></i></div>
+        <div><h4>API Reference</h4><p>Complete endpoint documentation</p></div>
+      </a>
+      <a href="error.html" class="glass-card doc-card">
+        <div class="doc-icon"><i class="bi bi-heart-pulse"></i></div>
+        <div><h4>Health Data API</h4><p>Sensor data and health metrics</p></div>
+      </a>
+      <a href="error.html" class="glass-card doc-card">
+        <div class="doc-icon"><i class="bi bi-code-square"></i></div>
+        <div><h4>Code Samples</h4><p>Example apps and integrations</p></div>
+      </a>
+    </div>
+
+    <!-- My Projects -->
+    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; margin: 2rem 0 1rem; font-weight: 700;">My Projects</h3>
+    <div class="projects-grid">
+      <div class="glass-card project-card">
+        <div class="project-header"><h4>HealthSync App</h4><span class="project-status live">Live</span></div>
+        <p>Real-time health data synchronization between Stackly Watch and mobile app.</p>
+        <div class="project-tech"><span>React Native</span><span>Node.js</span><span>Health API</span></div>
+        <div class="project-stats"><span><i class="bi bi-people"></i> 1.2K users</span><span><i class="bi bi-braces"></i> 45K calls/day</span></div>
+      </div>
+      <div class="glass-card project-card">
+        <div class="project-header"><h4>FitDash Widget</h4><span class="project-status beta">Beta</span></div>
+        <p>Customizable fitness dashboard widget for third-party health platforms.</p>
+        <div class="project-tech"><span>Flutter</span><span>GraphQL</span><span>Sensor SDK</span></div>
+        <div class="project-stats"><span><i class="bi bi-people"></i> 340 testers</span><span><i class="bi bi-braces"></i> 12K calls/day</span></div>
+      </div>
+      <div class="glass-card project-card">
+        <div class="project-header"><h4>AR Assist Tool</h4><span class="project-status dev">In Dev</span></div>
+        <p>Enterprise AR remote assistance tool using Stackly Vision glasses.</p>
+        <div class="project-tech"><span>Unity</span><span>WebRTC</span><span>AR SDK</span></div>
+        <div class="project-stats"><span><i class="bi bi-people"></i> Internal</span><span><i class="bi bi-braces"></i> Testing</span></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const savedName = localStorage.getItem('userName');
+    if (savedName) document.getElementById('dashUserName').textContent = savedName;
+  </script>
+</body>
+</html>

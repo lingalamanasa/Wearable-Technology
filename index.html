@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Stackly Wearable Technology - The future of wearable devices. Smartwatches, fitness trackers, AR glasses, and health monitors.">
+  <title>Stackly || Wearable Technology</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===== HERO ===== */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.25);
+    }
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(10,11,16,0.92), rgba(0,180,216,0.1), rgba(10,11,16,0.95));
+      z-index: 1;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.2rem;
+      background: rgba(0, 180, 216, 0.15);
+      border: 1px solid var(--primary-color);
+      border-radius: 25px;
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      animation: pulse 2s ease infinite;
+    }
+    .hero-title {
+      font-size: 4.2rem;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .typed-wrapper {
+      display: inline-block;
+      min-width: 200px;
+    }
+    .typed-text {
+      border-right: 3px solid var(--primary-color);
+      padding-right: 5px;
+      animation: glow 2s ease infinite;
+    }
+    .hero-text {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 550px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .hero-image {
+      position: relative;
+    }
+    .hero-image img {
+      width: 100%;
+      border-radius: 20px;
+      border: 2px solid var(--border-color);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-image::before {
+      content: '';
+      position: absolute;
+      top: -10px; right: -10px;
+      width: 100%; height: 100%;
+      border: 2px solid var(--primary-color);
+      border-radius: 20px;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    /* ===== STATS ===== */
+    .stats-section {
+      padding: 5rem 0;
+      background: var(--darker-bg);
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+    .stats-section::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,180,216,0.06), transparent 70%);
+      transform: translate(-50%, -50%);
+    }
+    .stats-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; position: relative; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
+    .stat-card { text-align: center; padding: 2rem; position: relative; }
+    .stat-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .stat-icon i { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-number { font-size: 3rem; font-weight: 900; font-family: 'Orbitron', sans-serif; background: linear-gradient(135deg, #fff, var(--primary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 0.5rem; }
+
+    /* ===== ABOUT ===== */
+    .about-section { padding: 7rem 0; position: relative; overflow: hidden; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .about-img { position: relative; }
+    .about-img img {
+      width: 100%;
+      border-radius: 16px;
+      border: 2px solid var(--primary-color);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      transition: var(--transition);
+    }
+    .about-img:hover img {
+      box-shadow: 0 25px 50px rgba(0,180,216,0.3);
+      transform: scale(1.02);
+    }
+    .about-img .floating-badge {
+      position: absolute;
+      bottom: -20px; right: -20px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: #fff;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: var(--glow-cyan);
+      animation: float 4s ease-in-out infinite;
+    }
+    .about-text p { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .features-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .features-list li { display: flex; align-items: center; gap: 0.8rem; font-weight: 600; transition: var(--transition); }
+    .features-list li:hover { transform: translateX(5px); color: var(--primary-color); }
+    .features-list i { color: var(--primary-color); font-size: 1.1rem; }
+
+    /* ===== PRODUCTS ===== */
+    .products-section { padding: 7rem 0; background: var(--darker-bg); position: relative; overflow: hidden; }
+    .products-header { text-align: center; margin-bottom: 3rem; }
+    .tab-buttons { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+    .tab-btn { background: transparent; color: var(--text-light); border: 1px solid var(--border-color); padding: 0.8rem 2rem; border-radius: 30px; font-family: 'Orbitron', sans-serif; cursor: pointer; transition: var(--transition); font-size: 0.85rem; }
+    .tab-btn.active, .tab-btn:hover { background: linear-gradient(135deg, var(--primary-color), #0077b6); border-color: var(--primary-color); box-shadow: var(--glow-cyan); color: #fff; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .product-card { text-align: center; }
+    .product-card img { width: 100%; height: 220px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem; }
+    .product-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .product-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
+    .product-card .price { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; color: var(--accent-green); margin-bottom: 1rem; }
+
+    /* ===== INNOVATION ===== */
+    .innovation-section { padding: 7rem 0; position: relative; overflow: hidden; }
+    .innovation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .innovation-card { text-align: center; padding: 2.5rem 1.5rem; }
+    .innovation-card .icon { font-size: 3rem; margin-bottom: 1.5rem; display: inline-flex; align-items: center; justify-content: center; width: 80px; height: 80px; border-radius: 20px; background: rgba(0,180,216,0.1); border: 1px solid var(--border-color); }
+    .innovation-card .icon i { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .innovation-card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; }
+    .innovation-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials-section { padding: 7rem 0; background: var(--darker-bg); position: relative; overflow: hidden; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .testimonial-card { padding: 2.5rem; }
+    .testimonial-stars { color: var(--accent-gold); font-size: 1.1rem; margin-bottom: 1rem; }
+    .testimonial-text { color: var(--text-muted); font-size: 1rem; line-height: 1.8; margin-bottom: 1.5rem; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+    .testimonial-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.2rem; }
+    .testimonial-info h4 { font-family: 'Outfit', sans-serif; font-size: 1rem; }
+    .testimonial-info span { color: var(--text-muted); font-size: 0.85rem; }
+
+    /* ===== BLOG PREVIEW ===== */
+    .blog-preview-section { padding: 7rem 0; position: relative; overflow: hidden; }
+    .blog-preview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .blog-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px 12px 0 0; }
+    .blog-card-content { padding: 1.5rem; }
+    .blog-card-meta { display: flex; gap: 1rem; margin-bottom: 0.8rem; }
+    .blog-card-meta span { font-size: 0.8rem; color: var(--primary-color); font-weight: 600; text-transform: uppercase; }
+    .blog-card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+    .blog-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    .blog-card .read-more { color: var(--primary-color); font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.3rem; }
+    .blog-card .read-more:hover { gap: 0.8rem; }
+
+    /* ===== CTA ===== */
+    .cta-section { padding: 7rem 0; background: var(--darker-bg); position: relative; overflow: hidden; text-align: center; }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(ellipse at center, rgba(0,180,216,0.08), transparent 60%);
+    }
+    .cta-content { position: relative; z-index: 2; }
+    .cta-content h2 { font-size: 3rem; margin-bottom: 1.5rem; }
+    .cta-content p { color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 2.5rem; }
+    .cta-buttons { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero-title { font-size: 2.5rem; }
+      .hero-text { margin: 0 auto 2rem; }
+      .hero-buttons { justify-content: center; }
+      .hero-image { margin-top: 2rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .features-list { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-number { font-size: 2rem; }
+      .cta-content h2 { font-size: 2rem; }
+      .tab-pane.active { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .hero-title { font-size: 2rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== SPLASH SCREEN ===== -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-logo">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="60" height="60" rx="14" fill="url(#splashGrad)"/>
+        <path d="M18 20h24v4H22v6h16v4H22v6h20v4H18V20z" fill="#fff"/>
+        <defs><linearGradient id="splashGrad" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs>
+      </svg>
+    </div>
+    <div class="splash-text">STACKLY</div>
+    <div class="splash-bar"></div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="10" fill="url(#logoGrad)"/>
+          <path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/>
+          <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs>
+        </svg>
+        <span>STACKLY</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" class="active">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+        <div class="nav-auth">
+          <a href="login.html" class="btn-secondary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;"><i class="bi bi-person-circle"></i> Login</a>
+          <a href="register.html" class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;"><i class="bi bi-person-plus"></i> Register</a>
+        </div>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero-section" id="hero">
+    <div class="hero-bg"><img src="images/hero-wearable.webp" alt="Wearable Technology"></div>
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge"><i class="bi bi-lightning-charge-fill"></i> Next-Gen Wearable Tech</div>
+          <h1 class="hero-title">The Future on<br>Your <span class="typed-wrapper"><span class="typed-text" id="typedText">Wrist</span></span></h1>
+          <p class="hero-text">Experience cutting-edge wearable technology that seamlessly integrates with your lifestyle. From health monitoring to augmented reality — we're redefining how humans connect with technology.</p>
+          <div class="hero-buttons">
+            <a href="services.html" class="btn-primary"><i class="bi bi-rocket-takeoff"></i> Explore Products</a>
+            <a href="about.html" class="btn-secondary"><i class="bi bi-play-circle"></i> Our Story</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="images/product-smartwatch.webp" alt="Smart Watch">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS SECTION ===== -->
+  <section class="stats-section" id="stats">
+    <div class="container">
+      <h2 class="stats-title fade-up">Trusted by <span style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Innovators</span> Worldwide</h2>
+      <div class="stats-grid">
+        <div class="stat-card glass-card fade-up delay-1">
+          <div class="stat-icon"><i class="bi bi-smartwatch"></i></div>
+          <div class="stat-number" data-target="50000" data-suffix="+">0</div>
+          <div class="stat-label">Devices Sold</div>
+        </div>
+        <div class="stat-card glass-card fade-up delay-2">
+          <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+          <div class="stat-number" data-target="120000" data-suffix="+">0</div>
+          <div class="stat-label">Happy Users</div>
+        </div>
+        <div class="stat-card glass-card fade-up delay-3">
+          <div class="stat-icon"><i class="bi bi-file-earmark-medical-fill"></i></div>
+          <div class="stat-number" data-target="85" data-suffix="+">0</div>
+          <div class="stat-label">Patents Filed</div>
+        </div>
+        <div class="stat-card glass-card fade-up delay-4">
+          <div class="stat-icon"><i class="bi bi-globe2"></i></div>
+          <div class="stat-number" data-target="40" data-suffix="+">0</div>
+          <div class="stat-label">Countries</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT PREVIEW ===== -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-img slide-left">
+          <img src="images/about-wearable.webp" alt="About Stackly Wearables">
+          <div class="floating-badge">Since 2022</div>
+        </div>
+        <div class="about-text slide-right">
+          <div class="section-badge"><i class="bi bi-cpu"></i> Who We Are</div>
+          <h2 class="section-title">Pioneering Tomorrow's <span>Wearables</span></h2>
+          <p>At Stackly, we believe technology should enhance the human experience — not complicate it. Our team of engineers, designers, and health scientists work together to create wearable devices that are both revolutionary and intuitive.</p>
+          <p>From biosensor-powered smartwatches to enterprise AR glasses, we push the boundaries of what wearable technology can achieve.</p>
+          <ul class="features-list">
+            <li><i class="bi bi-check-circle-fill"></i> AI Health Monitoring</li>
+            <li><i class="bi bi-check-circle-fill"></i> 5G Connectivity</li>
+            <li><i class="bi bi-check-circle-fill"></i> Extended Battery Life</li>
+            <li><i class="bi bi-check-circle-fill"></i> Water-Resistant Design</li>
+            <li><i class="bi bi-check-circle-fill"></i> Real-Time Analytics</li>
+            <li><i class="bi bi-check-circle-fill"></i> Cross-Platform Sync</li>
+          </ul>
+          <a href="about.html" class="btn-primary"><i class="bi bi-arrow-right"></i> Discover Our Story</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURED PRODUCTS ===== -->
+  <section class="products-section tab-section" id="products">
+    <div class="container">
+      <div class="products-header fade-up">
+        <div class="section-badge"><i class="bi bi-grid-fill"></i> Our Products</div>
+        <h2 class="section-title">Featured <span>Devices</span></h2>
+        <p class="section-desc" style="margin: 0 auto;">Explore our cutting-edge lineup of wearable technology designed for every lifestyle.</p>
+      </div>
+      <div class="tab-buttons fade-up">
+        <button class="tab-btn active" data-tab="smartwatches">Smartwatches</button>
+        <button class="tab-btn" data-tab="fitness">Fitness Trackers</button>
+        <button class="tab-btn" data-tab="arglasses">AR Glasses</button>
+      </div>
+      <div class="tab-pane active" id="smartwatches">
+        <div class="glass-card product-card fade-up delay-1">
+          <img src="images/product-smartwatch.webp" alt="Stackly Watch Pro">
+          <h3>Stackly Watch Pro</h3>
+          <p>Advanced health monitoring with ECG, SpO2, and sleep analysis. 7-day battery life.</p>
+          <div class="price">$399</div>
+          <a href="error.html" class="btn-primary"><i class="bi bi-cart-plus"></i> Learn More</a>
+        </div>
+        <div class="glass-card product-card fade-up delay-2">
+          <img src="images/product-smartwatch-elite.webp" alt="Stackly Watch Elite">
+          <h3>Stackly Watch Elite</h3>
+          <p>Premium titanium build with sapphire display. GPS, LTE, and NFC payments.</p>
+          <div class="price">$599</div>
+          <a href="error.html" class="btn-primary"><i class="bi bi-cart-plus"></i> Learn More</a>
+        </div>
+        <div class="glass-card product-card fade-up delay-3">
+          <img src="images/product-smartwatch-lite.webp" alt="Stackly Watch Lite">
+          <h3>Stackly Watch Lite</h3>
+          <p>Lightweight and affordable. Heart rate, steps, and notifications. 14-day battery.</p>
+          <div class="price">$199</div>
+          <a href="error.html" class="btn-primary"><i class="bi bi-cart-plus"></i> Learn More</a>
+        </div>
+      </div>
+      <div class="tab-pane" id="fitness">
+        <div class="glass-card product-card fade-up delay-1">
+          <img src="images/product-fitness.webp" alt="Stackly Band X">
+          <h3>Stackly Band X</h3>
+          <p>Ultra-slim fitness tracker with continuous heart rate and workout detection.</p>
+          <div class="price">$149</div>
+          <a href="error.html" class="btn-primary"><i class="bi bi-cart-plus"></i> Learn More</a>
+        </div>
+        <div class="glass-card product-card fade-up delay-2">
+          <img src="images/product-fitness.webp" alt="Stackly Band Sport">
+          <h3>Stackly Band Sport</h3>
+          <p>Built for athletes. Water-resistant to 50m with 20+ sport modes.</p>
+          <div class="price">$199</div>
+          <a href="error.html" class="btn-primary"><i class="bi bi-cart-plus"></i> Learn More</a>
+        </div>
+        <div class="glass-card product-card fade-up delay-3">
+          <img src="images/product-fitness.webp" alt="Stackly Band Kids">
+          <h3>Stackly Band Kids</h3>
+          <p>Safe, fun, and educational. GPS tracking with parental controls.</p>
+          <div class="price">$79</div>
+          <a href="error.html" class="btn-primary"><i class="bi bi-cart-plus"></i> Learn More</a>
+        </div>
+      </div>
+      <div class="tab-pane" id="arglasses">
+        <div class="glass-card product-card fade-up delay-1">
+          <img src="images/product-arglasses.webp" alt="Stackly Vision Pro">
+          <h3>Stackly Vision Pro</h3>
+          <p>Full AR experience with spatial computing. 8-hour battery, lightweight frame.</p>
+          <div class="price">$1,299</div>
+          <a href="error.html" class="btn-primary"><i class="bi bi-cart-plus"></i> Learn More</a>
+        </div>
+        <div class="glass-card product-card fade-up delay-2">
+          <img src="images/product-arglasses.webp" alt="Stackly Vision Lite">
+          <h3>Stackly Vision Lite</h3>
+          <p>Everyday smart glasses with heads-up display, camera, and voice assistant.</p>
+          <div class="price">$499</div>
+          <a href="error.html" class="btn-primary"><i class="bi bi-cart-plus"></i> Learn More</a>
+        </div>
+        <div class="glass-card product-card fade-up delay-3">
+          <img src="images/product-arglasses.webp" alt="Stackly Vision Enterprise">
+          <h3>Stackly Vision Enterprise</h3>
+          <p>Enterprise-grade AR for field service, manufacturing, and remote collaboration.</p>
+          <div class="price">$2,499</div>
+          <a href="error.html" class="btn-primary"><i class="bi bi-cart-plus"></i> Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INNOVATION LAB ===== -->
+  <section class="innovation-section" id="innovation">
+    <div class="container">
+      <div style="text-align: center;" class="fade-up">
+        <div class="section-badge"><i class="bi bi-lightbulb-fill"></i> Innovation Lab</div>
+        <h2 class="section-title">Our Technology <span>Stack</span></h2>
+        <p class="section-desc" style="margin: 0 auto;">Cutting-edge technologies powering the next generation of wearable devices.</p>
+      </div>
+      <div class="innovation-grid">
+        <div class="glass-card innovation-card fade-up delay-1">
+          <div class="icon"><i class="bi bi-cpu-fill"></i></div>
+          <h3>AI Health Engine</h3>
+          <p>Machine learning algorithms analyze health data in real-time to provide personalized insights and early warnings.</p>
+        </div>
+        <div class="glass-card innovation-card fade-up delay-2">
+          <div class="icon"><i class="bi bi-heart-pulse-fill"></i></div>
+          <h3>Biosensors</h3>
+          <p>Advanced optical and electrochemical sensors for continuous monitoring of heart rate, blood oxygen, and glucose.</p>
+        </div>
+        <div class="glass-card innovation-card fade-up delay-3">
+          <div class="icon"><i class="bi bi-headset-vr"></i></div>
+          <h3>AR Display Tech</h3>
+          <p>Micro-LED waveguide displays delivering stunning AR visuals with minimal power consumption.</p>
+        </div>
+        <div class="glass-card innovation-card fade-up delay-4">
+          <div class="icon"><i class="bi bi-battery-charging"></i></div>
+          <h3>Power Optimization</h3>
+          <p>Proprietary energy harvesting and ultra-low-power chipsets extending battery life up to 14 days.</p>
+        </div>
+        <div class="glass-card innovation-card fade-up delay-1">
+          <div class="icon"><i class="bi bi-shield-lock-fill"></i></div>
+          <h3>End-to-End Security</h3>
+          <p>Hardware-level encryption and secure enclaves protecting your biometric and personal data.</p>
+        </div>
+        <div class="glass-card innovation-card fade-up delay-2">
+          <div class="icon"><i class="bi bi-wifi"></i></div>
+          <h3>5G + UWB</h3>
+          <p>Ultra-fast connectivity with 5G and Ultra-Wideband for seamless device communication and location.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="container">
+      <div style="text-align: center;" class="fade-up">
+        <div class="section-badge"><i class="bi bi-chat-quote-fill"></i> Testimonials</div>
+        <h2 class="section-title">What Our Users <span>Say</span></h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="glass-card testimonial-card fade-up delay-1">
+          <div class="testimonial-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+          <p class="testimonial-text">"The Stackly Watch Pro detected an irregular heart rhythm that my doctor confirmed was early-stage AFib. This device literally saved my life."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">SM</div>
+            <div class="testimonial-info">
+              <h4>Sarah Mitchell</h4>
+              <span>Fitness Enthusiast</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card testimonial-card fade-up delay-2">
+          <div class="testimonial-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+          <p class="testimonial-text">"We deployed Stackly Vision Enterprise across our manufacturing floor. Productivity jumped 35% in the first month. The AR overlays are incredibly intuitive."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">JC</div>
+            <div class="testimonial-info">
+              <h4>James Chen</h4>
+              <span>VP of Operations, TechCorp</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card testimonial-card fade-up delay-3">
+          <div class="testimonial-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div>
+          <p class="testimonial-text">"As a developer, the Stackly SDK is a dream. Well-documented APIs, robust sensor access, and the community is incredibly supportive."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">AP</div>
+            <div class="testimonial-info">
+              <h4>Anika Patel</h4>
+              <span>IoT Developer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOG PREVIEW ===== -->
+  <section class="blog-preview-section" id="blog">
+    <div class="container">
+      <div style="text-align: center;" class="fade-up">
+        <div class="section-badge"><i class="bi bi-journal-richtext"></i> Latest Insights</div>
+        <h2 class="section-title">Tech <span>Blog</span></h2>
+        <p class="section-desc" style="margin: 0 auto;">Stay updated with the latest trends, research, and innovations in wearable technology.</p>
+      </div>
+      <div class="blog-preview-grid">
+        <div class="glass-card blog-card fade-up delay-1" style="padding: 0; overflow: hidden;">
+          <img src="images/blog-1.webp" alt="AI Health Monitoring">
+          <div class="blog-card-content">
+            <div class="blog-card-meta"><span>AI & Health</span><span>Jun 25, 2026</span></div>
+            <h3>How AI is Revolutionizing Wearable Health Monitoring</h3>
+            <p>Discover how machine learning algorithms are enabling wearable devices to predict health issues before they become serious.</p>
+            <a href="error.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="glass-card blog-card fade-up delay-2" style="padding: 0; overflow: hidden;">
+          <img src="images/blog-2.webp" alt="5G Wearables">
+          <div class="blog-card-content">
+            <div class="blog-card-meta"><span>Connectivity</span><span>Jun 20, 2026</span></div>
+            <h3>5G and the Future of Always-Connected Wearables</h3>
+            <p>How 5G is enabling real-time data streaming, cloud computing, and immersive AR experiences on wearable devices.</p>
+            <a href="error.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="glass-card blog-card fade-up delay-3" style="padding: 0; overflow: hidden;">
+          <img src="images/blog-3.webp" alt="Sports Tech">
+          <div class="blog-card-content">
+            <div class="blog-card-meta"><span>Sports Tech</span><span>Jun 15, 2026</span></div>
+            <h3>Wearables in Professional Sports: A Game Changer</h3>
+            <p>How professional athletes and teams are leveraging wearable technology for peak performance and injury prevention.</p>
+            <a href="error.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 3rem;" class="fade-up">
+        <a href="blog.html" class="btn-secondary"><i class="bi bi-journal-text"></i> View All Articles</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section" id="cta">
+    <div class="container">
+      <div class="cta-content scale-in">
+        <div class="section-badge"><i class="bi bi-stars"></i> Get Started</div>
+        <h2 class="section-title">Experience the <span>Future</span></h2>
+        <p>Join thousands of innovators, developers, and health-conscious users who are already transforming their lives with Stackly wearable technology.</p>
+        <div class="cta-buttons">
+          <a href="login.html" class="btn-primary"><i class="bi bi-box-arrow-in-right"></i> Get Started Free</a>
+          <a href="error.html" class="btn-secondary"><i class="bi bi-discord"></i> Join Community</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="margin-bottom: 0.5rem;">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="40" height="40" rx="10" fill="url(#footLogoGrad)"/>
+              <path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/>
+              <defs><linearGradient id="footLogoGrad" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs>
+            </svg>
+            <span>STACKLY</span>
+          </a>
+          <p>Pioneering the future of wearable technology. Smart devices that enhance your life, health, and productivity.</p>
+          <div class="footer-socials">
+            <a href="error.html"><i class="bi bi-twitter-x"></i></a>
+            <a href="error.html"><i class="bi bi-facebook"></i></a>
+            <a href="error.html"><i class="bi bi-instagram"></i></a>
+            <a href="error.html"><i class="bi bi-linkedin"></i></a>
+            <a href="error.html"><i class="bi bi-github"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="error.html">Smartwatches</a></li>
+            <li><a href="error.html">Fitness Trackers</a></li>
+            <li><a href="error.html">AR Glasses</a></li>
+            <li><a href="error.html">Health Monitors</a></li>
+            <li><a href="error.html">Accessories</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="error.html">Help Center</a></li>
+            <li><a href="error.html">Documentation</a></li>
+            <li><a href="error.html">API Reference</a></li>
+            <li><a href="error.html">Privacy Policy</a></li>
+            <li><a href="error.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Stackly Wearable Technology. All rights reserved. Crafted with <i class="bi bi-heart-fill" style="color: var(--accent-pink);"></i> by Stackly</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
