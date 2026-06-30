@@ -96,19 +96,19 @@
 <body>
   <div class="mobile-header">
     <button class="sidebar-toggle" id="sidebarToggle"><i class="bi bi-list"></i></button>
-    <div class="mobile-logo">
+    <a href="developer-dashboard.html" class="mobile-logo" style="text-decoration: none;">
       <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="10" fill="url(#mLG2)"/><path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/><defs><linearGradient id="mLG2" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs></svg>
       <span>STACKLY</span>
-    </div>
+    </a>
     <a href="error.html" style="color: var(--text-muted); font-size: 1.2rem;"><i class="bi bi-bell"></i></a>
   </div>
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
   <aside class="sidebar" id="dashSidebar">
-    <div class="sidebar-header">
+    <a href="developer-dashboard.html" class="sidebar-header" style="text-decoration: none;">
       <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="10" fill="url(#sLG2)"/><path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/><defs><linearGradient id="sLG2" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs></svg>
       <span>STACKLY</span>
-    </div>
+    </a>
     <nav class="sidebar-nav">
       <div class="sidebar-section">Developer</div>
       <a href="#" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
@@ -142,6 +142,17 @@
     </div>
 
     <!-- API Stats -->
+    
+    <!-- Dev Banner with Image -->
+    <div class="glass-card" style="margin-bottom: 2rem; overflow: hidden; position: relative; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: linear-gradient(135deg, rgba(123,47,247,0.05), rgba(0,180,216,0.05)); border-left: 4px solid var(--secondary-color);">
+      <div style="flex: 1; min-width: 250px;">
+        <h2 style="font-family: 'Orbitron', sans-serif; margin-bottom: 0.5rem; font-size: 1.5rem;">Developer Tools v4.0</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1rem;">Access the newest health sensors and real-time streaming APIs for the Stackly Watch Pro.</p>
+        <a href="error.html" class="btn-primary" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; text-decoration: none;"><i class="bi bi-journal-code"></i> Read Docs</a>
+      </div>
+      <img src="images/service-dev.webp" alt="Developer Tools" style="height: 120px; border-radius: 8px; object-fit: cover; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));">
+    </div>
+    
     <div class="api-grid">
       <div class="glass-card api-card">
         <div class="api-icon purple"><i class="bi bi-braces-asterisk"></i></div>
