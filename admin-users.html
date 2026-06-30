@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard || Stackly Wearable Technology</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { display: flex; min-height: 100vh; overflow-x: hidden; }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 270px; min-height: 100vh; background: var(--darker-bg); border-right: 1px solid var(--border-color);
+      display: flex; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 100;
+      transition: transform 0.4s ease;
+    }
+    .sidebar-header { padding: 1.5rem; display: flex; align-items: center; gap: 0.7rem; border-bottom: 1px solid var(--border-color); }
+    .sidebar-header svg { height: 36px; width: 36px; }
+    .sidebar-header span { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    .sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+    .sidebar-nav a { display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.5rem; color: var(--text-muted); font-weight: 500; transition: var(--transition); border-left: 3px solid transparent; font-size: 0.95rem; }
+    .sidebar-nav a:hover, .sidebar-nav a.active { color: var(--primary-color); background: rgba(0,180,216,0.06); border-left-color: var(--primary-color); }
+    .sidebar-nav a i { font-size: 1.1rem; width: 20px; text-align: center; }
+    .sidebar-section { padding: 1rem 1.5rem 0.5rem; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+
+    .sidebar-footer { padding: 1.5rem; border-top: 1px solid var(--border-color); }
+    .user-info { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+    .user-avatar { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; }
+    .user-info .user-name { font-weight: 600; font-size: 0.9rem; }
+    .user-info .user-role { font-size: 0.75rem; color: var(--primary-color); text-transform: uppercase; letter-spacing: 1px; }
+    .logout-btn { width: 100%; justify-content: center; padding: 0.7rem; font-size: 0.8rem; background: transparent; color: var(--accent-pink); border: 1px solid var(--accent-pink); }
+    .logout-btn:hover { background: rgba(255,51,102,0.1); }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content { margin-left: 270px; flex: 1; padding: 2rem; min-height: 100vh; }
+
+    .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .dash-header h1 { font-size: 1.8rem; }
+    .dash-header h1 span { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .dash-date { color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+
+    .mobile-header { display: none; position: fixed; top: 0; left: 0; right: 0; height: 60px; background: var(--darker-bg); border-bottom: 1px solid var(--border-color); z-index: 99; padding: 0 1rem; align-items: center; justify-content: space-between; }
+    .mobile-header .sidebar-toggle { background: none; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer; }
+    .mobile-header .mobile-logo { display: flex; align-items: center; gap: 0.5rem; }
+    .mobile-header .mobile-logo svg { height: 30px; width: 30px; }
+    .mobile-header .mobile-logo span { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99; }
+    .sidebar-overlay.active { display: block; }
+
+    /* ===== KPI CARDS ===== */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .kpi-card { padding: 1.5rem; display: flex; align-items: center; gap: 1.2rem; }
+    .kpi-icon { width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .kpi-icon.cyan { background: rgba(0,180,216,0.12); color: var(--primary-color); }
+    .kpi-icon.purple { background: rgba(123,47,247,0.12); color: var(--secondary-color); }
+    .kpi-icon.green { background: rgba(0,245,160,0.12); color: var(--accent-green); }
+    .kpi-icon.pink { background: rgba(255,51,102,0.12); color: var(--accent-pink); }
+    .kpi-info h3 { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900; }
+    .kpi-info p { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+    .kpi-info .trend { font-size: 0.8rem; font-weight: 600; margin-top: 0.3rem; }
+    .kpi-info .trend.up { color: var(--accent-green); }
+    .kpi-info .trend.down { color: var(--accent-pink); }
+
+    /* ===== CHARTS PLACEHOLDER ===== */
+    .charts-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+    .chart-card { padding: 1.5rem; }
+    .chart-card h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 700; }
+    .chart-placeholder { width: 100%; height: 250px; border-radius: 12px; background: rgba(0,180,216,0.04); border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; color: var(--text-muted); }
+    .chart-placeholder i { font-size: 2rem; color: var(--primary-color); }
+
+    /* ===== TABLE ===== */
+    .table-card { margin-bottom: 2rem; padding: 1.5rem; }
+    .table-card h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 700; }
+    .dash-table { width: 100%; border-collapse: collapse; }
+    .dash-table th, .dash-table td { padding: 0.8rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+    .dash-table th { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .dash-table tr:hover { background: rgba(0,180,216,0.04); }
+    .status-badge { padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.75rem; font-weight: 600; }
+    .status-badge.active { background: rgba(0,245,160,0.15); color: var(--accent-green); }
+    .status-badge.pending { background: rgba(255,215,0,0.15); color: var(--accent-gold); }
+    .status-badge.inactive { background: rgba(255,51,102,0.15); color: var(--accent-pink); }
+
+    /* ===== USER MANAGEMENT ===== */
+    .users-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .user-card { padding: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .user-card-avatar { width: 45px; height: 45px; border-radius: 12px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; min-width: 45px; }
+    .user-card-info h4 { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600; }
+    .user-card-info p { color: var(--text-muted); font-size: 0.8rem; }
+    .user-card-actions { margin-left: auto; display: flex; gap: 0.5rem; }
+    .user-card-actions button { background: none; border: 1px solid var(--border-color); color: var(--text-muted); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+    .user-card-actions button:hover { border-color: var(--primary-color); color: var(--primary-color); }
+
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); z-index: 1000; }
+      .sidebar.active { transform: translateX(0); }
+      .main-content { margin-left: 0; padding: 80px 1rem 2rem 1rem; width: 100%; max-width: 100vw; box-sizing: border-box; }
+      .mobile-header { display: flex; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .dash-table { display: block; overflow-x: auto; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="bi bi-list"></i></button>
+    <div class="mobile-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="10" fill="url(#mLG)"/><path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/><defs><linearGradient id="mLG" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs></svg>
+      <span>STACKLY</span>
+    </div>
+    <a href="error.html" style="color: var(--text-muted); font-size: 1.2rem;"><i class="bi bi-bell"></i></a>
+  </div>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="dashSidebar">
+    <div class="sidebar-header">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="10" fill="url(#sLG)"/><path d="M12 13h16v3H15v4h10v3H15v4h13v3H12V13z" fill="#fff"/><defs><linearGradient id="sLG" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#00B4D8"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs></svg>
+      <span>STACKLY</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">Main</div>
+      <a href="admin-dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="admin-users.html" class="active"><i class="bi bi-people"></i> Users</a>
+      <a href="admin-devices.html"><i class="bi bi-smartwatch"></i> Devices</a>
+      <a href="error.html"><i class="bi bi-graph-up-arrow"></i> Analytics</a>
+      <div class="sidebar-section">Management</div>
+      <a href="error.html"><i class="bi bi-receipt"></i> Orders</a>
+      <a href="error.html"><i class="bi bi-headset"></i> Support</a>
+      <a href="error.html"><i class="bi bi-megaphone"></i> Marketing</a>
+      <div class="sidebar-section">Settings</div>
+      <a href="error.html"><i class="bi bi-gear"></i> Settings</a>
+      <a href="error.html"><i class="bi bi-shield-lock"></i> Security</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">AD</div>
+        <div>
+          <div class="user-name" id="dashUserName">Admin User</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+      <button class="btn-secondary logout-btn"><i class="bi bi-box-arrow-left"></i> Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="dash-header">
+      <div>
+        <h1>Admin <span>Users</span></h1>
+        <p style="color: var(--text-muted); margin-top: 0.3rem;">Welcome back! Here's your platform overview.</p>
+      </div>
+
+    <!-- Users Stats -->
+    <div class="kpi-grid">
+      <div class="glass-card kpi-card">
+        <div class="kpi-icon cyan"><i class="bi bi-people-fill"></i></div>
+        <div class="kpi-info">
+          <h3>12,847</h3>
+          <p>Total Users</p>
+        </div>
+      </div>
+      <div class="glass-card kpi-card">
+        <div class="kpi-icon green"><i class="bi bi-person-check-fill"></i></div>
+        <div class="kpi-info">
+          <h3>10,240</h3>
+          <p>Active (30d)</p>
+        </div>
+      </div>
+      <div class="glass-card kpi-card">
+        <div class="kpi-icon purple"><i class="bi bi-star-fill"></i></div>
+        <div class="kpi-info">
+          <h3>4,521</h3>
+          <p>Premium Subs</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Directory -->
+    <div class="glass-card table-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h3>User Directory</h3>
+        <div style="display: flex; gap: 1rem;">
+          <input type="text" placeholder="Search users..." style="padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: #fff;">
+          <button class="btn-primary" style="padding: 0.5rem 1rem; border-radius: 8px;"><i class="bi bi-filter"></i> Filter</button>
+        </div>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="dash-table">
+          <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Status</th><th>Last Login</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="display: flex; align-items: center; gap: 0.8rem;">
+                <div class="user-card-avatar" style="width: 32px; height: 32px; min-width: 32px; font-size: 0.7rem;">SM</div>
+                Sarah Mitchell
+              </td>
+              <td>sarah.m@example.com</td>
+              <td>Premium</td>
+              <td><span class="status-badge active">Active</span></td>
+              <td>2 hours ago</td>
+              <td><button style="background: none; border: none; color: var(--text-muted); cursor: pointer;"><i class="bi bi-three-dots-vertical"></i></button></td>
+            </tr>
+            <tr>
+              <td style="display: flex; align-items: center; gap: 0.8rem;">
+                <div class="user-card-avatar" style="width: 32px; height: 32px; min-width: 32px; font-size: 0.7rem;">JC</div>
+                James Chen
+              </td>
+              <td>james.c@example.com</td>
+              <td>Enterprise</td>
+              <td><span class="status-badge active">Active</span></td>
+              <td>5 hours ago</td>
+              <td><button style="background: none; border: none; color: var(--text-muted); cursor: pointer;"><i class="bi bi-three-dots-vertical"></i></button></td>
+            </tr>
+            <tr>
+              <td style="display: flex; align-items: center; gap: 0.8rem;">
+                <div class="user-card-avatar" style="width: 32px; height: 32px; min-width: 32px; font-size: 0.7rem;">AP</div>
+                Anika Patel
+              </td>
+              <td>anika.p@example.com</td>
+              <td>Developer</td>
+              <td><span class="status-badge active">Active</span></td>
+              <td>1 day ago</td>
+              <td><button style="background: none; border: none; color: var(--text-muted); cursor: pointer;"><i class="bi bi-three-dots-vertical"></i></button></td>
+            </tr>
+            <tr>
+              <td style="display: flex; align-items: center; gap: 0.8rem;">
+                <div class="user-card-avatar" style="width: 32px; height: 32px; min-width: 32px; font-size: 0.7rem; background: #333;">MJ</div>
+                Mike Johnson
+              </td>
+              <td>mike.j@example.com</td>
+              <td>Starter</td>
+              <td><span class="status-badge inactive">Inactive</span></td>
+              <td>3 weeks ago</td>
+              <td><button style="background: none; border: none; color: var(--text-muted); cursor: pointer;"><i class="bi bi-three-dots-vertical"></i></button></td>
+            </tr>
+            <tr>
+              <td style="display: flex; align-items: center; gap: 0.8rem;">
+                <div class="user-card-avatar" style="width: 32px; height: 32px; min-width: 32px; font-size: 0.7rem;">LW</div>
+                Lisa Wang
+              </td>
+              <td>lisa.w@example.com</td>
+              <td>Premium</td>
+              <td><span class="status-badge active">Active</span></td>
+              <td>1 hour ago</td>
+              <td><button style="background: none; border: none; color: var(--text-muted); cursor: pointer;"><i class="bi bi-three-dots-vertical"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const savedName = localStorage.getItem('userName');
+    if (savedName) document.getElementById('dashUserName').textContent = savedName;
+  </script>
+</body>
+</html>
